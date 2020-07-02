@@ -2,15 +2,78 @@
 
 <h1>Counter</h1>
 
-<p>Current count: @currentCount</p>
+<p>Current count: 
+    <span class="@backgroundColor"> @currentCount </span>
+</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<p>
+    <input type="number" 
+           @bind="@increment"
+           @bind:event="oninput"
+           @onkeypress="KeyHandler"
+           @onkeypress:preventDefault/>
+</p>
+
+<button class="btn btn-primary" 
+        @onclick="IncrementCount" 
+        disabled=@(currentCount >= 10)>
+    Click me
+</button>
+
+<div style="width: 400px; height: 400px; background: yellow"
+     @onmousemove="OuterMouseMove">
+    @outerPos
+    <div style="width: 300px; height: 300px;
+        background: green; margin:50px"
+        @onmousemove="InnerMouseMove"
+        @onmousemove:stopPropagation>
+            @innerPos
+    </div>
+</div>
+
+
+
+<p>
+    <h1>Date Format</h1>
+    <input @bind="Today" @bind:format="yyyy-MM-dd" />
+    <button class="btn btn-primary"
+            @onclick="IncrementDate">
+        Next Day
+    </button>
+</p>
 
 @code {
     private int currentCount = 0;
+    private int increment = 1;
+    private string outerPos = "Nothing yet";
 
-    private void IncrementCount()
+    private void OuterMouseMove(MouseEventArgs e)
+        => outerPos = $"Mouse last at {e.ClientX}x{e.ClientY}";
+
+    private string innerPos = "Nothing yet";
+
+    private void InnerMouseMove(MouseEventArgs e)
+        => innerPos = $"Mouse last at {e.ClientX}x{e.ClientY}";
+
+    string backgroundColor = "red-background";
+
+    private void IncrementCount(MouseEventArgs e)
     {
-        currentCount++;
+        currentCount += increment;
+        backgroundColor = (currentCount % 2 == 0) ?
+            "red-background" : "yellow-background";
     }
+
+    private void KeyHandler(KeyboardEventArgs e)
+    {
+        Console.WriteLine(e.Code);
+        if (e.Key == "+")
+            increment++;
+        else if (e.Key == "-")
+            increment--;
+    }
+
+    private DateTime Today { get; set; } = DateTime.Now;
+    private void IncrementDate()
+    => Today = Today.AddDays(1);
 }
