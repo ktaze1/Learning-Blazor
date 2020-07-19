@@ -1,7 +1,52 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<h1> Our Selection of Pizzas</h1>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@foreach (var pizza in State.Menu.Pizzas)
+{
+    <div class="row">
+        <div class="col">
+            @pizza.Name
+        </div>
+        <div class="col">
+            @pizza.Price
+        </div>
+        <div class="col">
+            <img src="@SpicinessImage(pizza.Spiciness)"
+                 alt="@pizza.Spiciness" />
+        </div>
+        <div class="col">
+            <button class="btn btn-success"
+                    @onclick="@(() => AddToBasket(pizza))">
+                Add
+            </button>
+        </div>
+    </div>
+}
+
+<!--- End Menu-->
+
+@code {
+    private State State { get; } = new State()
+    {
+        Menu = new Menu
+        {
+            Pizzas = new List<Pizza>
+            {
+                new Pizza(1, "Pepperoni", 8.99M, Spiciness.Spicy),
+                new Pizza(1, "Margarita", 7.99M, Spiciness.None),
+                new Pizza(1, "Diabolo", 8.99M, Spiciness.Hot),
+            }
+        }
+    };
+
+    private void AddToBasket(Pizza pizza)
+    {
+        Console.WriteLine($"Added pizza {pizza.Name}");
+        State.Basket.Add(pizza.Id);
+    }
+
+    private string SpicinessImage(Spiciness spiciness)
+        => $"images/{spiciness.ToString().ToLower()}.png";
+}
