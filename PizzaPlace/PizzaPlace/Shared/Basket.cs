@@ -14,5 +14,10 @@ namespace PizzaPlace.Shared
         {
             Orders.Add(pizzaId);
         }
+
+        public void RemoveAt(int index)
+        {
+            Orders.RemoveAt(index);
+        }
     }
 }
