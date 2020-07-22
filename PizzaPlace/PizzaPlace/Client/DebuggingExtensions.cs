@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 
 namespace PizzaPlace.Client
 {
-    public static class DebuggingExtensions
-    {
-        public static string ToJson(this object obj)
-            => JsonSerializer.Serialize(obj, obj.GetType());
-    }
+  public static class DebuggingExtensions
+  {
+    public static string ToJson(this object obj)
+      => JsonSerializer.Serialize(obj, obj.GetType());
+  }
 }
