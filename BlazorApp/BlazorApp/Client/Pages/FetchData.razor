@@ -33,6 +33,24 @@ else
             }
         </tbody>
     </table>
+
+    <Grid Items="forecasts">
+        <Header>
+            <th>Date</th>
+            <th>Temp. (C)</th>
+            <th>Temp. (F)</th>
+            <th>Summary</th>
+        </Header>
+        <Row Context="forecast">
+            <td>@forecast.Date</td>
+            <td>@forecast.TemperatureC</td>
+            <td>@forecast.TemperatureF</td>
+            <td>@forecast.Summary</td>
+        </Row>
+        <Footer>
+            <td colspan="4">Spring is in the air</td>
+        </Footer>
+    </Grid>
 }
 
 @code {
