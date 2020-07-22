@@ -1,105 +1,27 @@
 ﻿@page "/"
 
 <!-- Menu -->
-<h1> Our Selection of Pizzas</h1>
 
-@foreach (var pizza in State.Menu.Pizzas)
-{
-    <div class="row">
-        <div class="col">
-            @pizza.Name
-        </div>
-        <div class="col">
-            @pizza.Price
-        </div>
-        <div class="col">
-            <img src="@SpicinessImage(pizza.Spiciness)"
-                 alt="@pizza.Spiciness" />
-        </div>
-        <div class="col">
-            <button class="btn btn-success"
-                    @onclick="@(() => AddToBasket(pizza))">
-                Add
-            </button>
-        </div>
-    </div>
-}
+<PizzaList Title="Our Selection of Pizzas"
+           Menu="@State.Menu"
+           Selected="@(async (pizza) => AddToBasket(pizza))" />
 
 <!--- End Menu-->
 <!-- Shopping Basket-->
-@if (State.Basket.Orders.Any())
-{
-    <h1> Your current order</h1>
-
-    @foreach (var (pizza, pos) in State.Basket.Orders.Select(
-(id, pos) => (State.Menu.GetPizza(id), pos)))
-    {
-        <div class="row">
-            <div class="col">
-                @pizza.Name
-            </div>
-            <div class="col">
-                @pizza.Price
-            </div>
-            <div class="col">
-                <button class="btn btn-danger"
-                        @onclick="@(() => RemoveFromBasket(pos))">
-                    Remove
-                </button>
-            </div>
-        </div>
-    }
-
-    <div class="row">
-        <div class="col"> Total:</div>
-        <div class="col"> @State.TotalPrice</div>
-        <div class="col"> </div>
-    </div>
-}
+<ShoppingBasket Title="Your Current Order"
+                Basket="@State.Basket"
+                GetPizzaFromId="@State.Menu.GetPizza"
+                Selected="@( (pos) => RemoveFromBasket(pos))" />
 <!-- End Shopping Basket-->
 
 
 <!-- Customer Entry-->
-<h1> Please enter your details</h1>
 
-<EditForm OnInvalidSubmit="PlaceOrder"
-          Model="@State.Basket.Customer">
-    <DataAnnotationsValidator />
-
-    <div class="form-group row mb-1">
-        <label class="col-sm-3 col-form-label"
-               for="FirstName">Name: </label>
-        <div class="col-sm-9">
-            <InputText class="form-control"
-                       @bind-Value="@State.Basket.Customer.Name" />
-            <ValidationMessage For="@(() => State.Basket.Customer.Name)" />
-        </div>
-    </div>
-    <div class="form-group row mb-1">
-        <label class="col-sm-3 col-form-label"
-               for="LasttName">Street: </label>
-        <div class="col-sm-9">
-            <InputText class="form-control"
-                       @bind-Value="@State.Basket.Customer.Street" />
-            <ValidationMessage For="@(() => State.Basket.Customer.Street)" />
-        </div>
-    </div>
-    <div class="form-group row mb-1">
-        <label class="col-sm-3 col-form-label"
-               for="Birthday">City: </label>
-        <div class="col-sm-9">
-            <InputText class="form-control"
-                       @bind-Value="@State.Basket.Customer.City" />
-            <ValidationMessage For="@(() => State.Basket.Customer.City)" />
-        </div>
-    </div>
-    <div class="form-group mb-0">
-        <button type="submit"
-                id="BtnRegister" class="btn btn-primary">
-            Checkout
-        </button>
-    </div>
-</EditForm>
+<CustomerEntry Title="Please enter your details below"
+               ButtonTitle="Checkout"
+               ButtonClass="btn btn-primary"
+               Customer="@State.Basket.Customer"
+               Submit="@PlaceOrder" />
 
 <!-- End Customer Entry-->
 
@@ -138,5 +60,7 @@
     {
         Console.WriteLine("Placing Order");
     }
+
+
 
 }
