@@ -3,28 +3,28 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace PizzaPlace.Client.Pages
 {
-  public class InputWatcher : ComponentBase
-  {
-    private EditContext editContext;
-
-    [CascadingParameter]
-    public EditContext EditContext
+    public class InputWatcher : ComponentBase
     {
-      get => this.editContext;
-      set
-      {
-        this.editContext = value;
-        EditContext.OnFieldChanged += async (sender, e) =>
+        private EditContext editContext;
+
+        [CascadingParameter]
+        public EditContext EditContext
         {
-          await FieldChanged.InvokeAsync(e.FieldIdentifier.FieldName);
-        };
-      }
+            get => this.editContext;
+            set
+            {
+                this.editContext = value;
+                EditContext.OnFieldChanged += async (sender, e) =>
+                {
+                    await FieldChanged.InvokeAsync(e.FieldIdentifier.FieldName);
+                };
+            }
+        }
+
+        [Parameter]
+        public EventCallback<string> FieldChanged { get; set; }
+
+        public bool Validate()
+        => EditContext?.Validate() ?? false;
     }
-
-    [Parameter]
-    public EventCallback<string> FieldChanged { get; set; }
-
-    public bool Validate()
-    => EditContext?.Validate() ?? false;
-  }
 }
