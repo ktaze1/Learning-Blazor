@@ -11,9 +11,9 @@ namespace PizzaPlace.Shared
 
   public class Pizza
   {
-    public Pizza() { }
+    public Pizza() { } //default constructor
 
-    public Pizza(int id, string name, decimal price,
+    public Pizza(int id, string name, decimal price, 
                  Spiciness spiciness)
     {
       Id = id;
@@ -24,6 +24,7 @@ namespace PizzaPlace.Shared
       Spiciness = spiciness;
     }
 
+    //read and write
     public int Id { get; set; }
     public string Name { get; set;  }
     public decimal Price { get; set; }
